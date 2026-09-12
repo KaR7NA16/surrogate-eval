@@ -1,9 +1,11 @@
 cff-version: 1.2.0
-message: "If you use this software, cite its title and version. Replace provisional collective authorship with verified responsible authors and add a release URL/DOI before public release."
+message: "If you use this software, cite the author, title, version and repository URL."
 title: "Response Fidelity Lab"
 type: software
+repository-code: "https://github.com/KaR7NA16/response-fidelity-lab"
+url: "https://github.com/KaR7NA16/response-fidelity-lab"
 authors:
-  - name: "Response Fidelity Lab contributors"
+  - name: "KaR7NA16"
 version: 0.1.0
 date-released: 2026-09-12
 license: MIT

@@ -9,14 +9,18 @@ import subprocess
 import tarfile
 import uuid
 import zipfile
+import venv
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--python", type=Path, required=True, help="Clean wheel environment Python")
+    parser.add_argument(
+        "--python",
+        type=Path,
+        help="Existing clean wheel environment; otherwise create and install one",
+    )
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    interpreter = args.python.resolve()
     output = root / "outputs" / ("distribution-" + uuid.uuid4().hex[:12])
     output.mkdir(parents=True)
     files = list((root / "dist").glob("*.whl")) + list((root / "dist").glob("*.tar.gz"))
@@ -29,6 +33,16 @@ def main():
             with tarfile.open(path) as archive:
                 names = archive.getnames()
         assert not any("reproduction/l96/" in n or n.endswith(".npz") for n in names)
+    if args.python:
+        interpreter = args.python.resolve()
+    else:
+        environment = output / "venv"
+        venv.EnvBuilder(with_pip=True).create(environment)
+        interpreter = environment / (
+            "Scripts/python.exe" if __import__("os").name == "nt" else "bin/python"
+        )
+        wheel = next(p for p in files if p.suffix == ".whl")
+        subprocess.run([str(interpreter), "-m", "pip", "install", str(wheel)], check=True)
     missing = []
     documents = [
         root / "README.md",

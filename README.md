@@ -91,15 +91,29 @@ print(report["aggregate"]["response_mse"])
 
 Start with the [runnable external-model tutorial](docs/your_model.md), then consult the [data format](docs/data_format.md) and [API reference](docs/api.md). Reference outputs for matched perturbations are required; ordinary time-series data alone do not provide response-error labels.
 
-## Research foundation: partially observed Lorenz–96
+## Case introduction: tested in a Lorenz–96 research workflow
 
-The toolkit grew from a study of perturbation-response fidelity in partially observed chaotic dynamics. Its frozen Lorenz–96 case preserves protocols, model weights, reference data and results, connecting the software interfaces to an auditable research workflow.
+Response Fidelity Lab grew from a study of perturbation-response fidelity in partially observed chaotic dynamics. This historical case shows the workflow in use under a defined scientific protocol, with controls and numerical verification.
 
-The case includes two intervention studies, each evaluated on **1,536 fresh initial states after selection was fixed**, across F16/F24 and eight training-dataset clusters per forcing. It supports reconstruction of selected-model predictions and comparison through the generic scoring interface.
+| Test dimension | Recorded scope |
+|---|---|
+| Dynamical regimes | Partially observed Lorenz–96 at F16 and F24 |
+| Evaluation design | Two intervention studies; selection fixed before generating 1,536 fresh initial states per study |
+| Replication | Eight training-dataset clusters per forcing; three network initializations within each cluster and input block |
+| Controls | Original same-input MLP, nominal continuation and response-aware interventions; current-only and history inputs |
+| Numerical checks | Independent NumPy prediction/metric checks, derivative checks and a separate head-solve reproduction |
+| Provenance | 119 manifest-bound files covering frozen protocols, weights, reference data and results |
 
-The case also illustrates why effect size matters: the full-network history-input intervention achieved median cluster response-error reductions of **3.03% at F16 and 0.88% at F24**, below the study's practical threshold. These results provide an evaluation case, not a claim of a superior training algorithm. See the [complete evidence record](docs/evidence.md) for controls, denominators and limitations.
+History-input models yielded these median cluster response-error reductions against their original same-input MLP:
 
-The optional evidence bundle is external to this repository and is not included in the package. No public download is currently provided. Follow the [reproduction guide](reproduction/README.md) to verify its manifest and export data. The linear and nonlinear pendulum examples run independently of that bundle.
+| Intervention | F16 | F24 |
+|---|---:|---:|
+| Frozen-feature head | 2.13% | 0.33% |
+| Full-network intervention | 3.03% | 0.88% |
+
+This case demonstrates use in a controlled scientific evaluation, including faithful reporting of modest effects. No cluster met the declared joint practical criterion (at least 10% response improvement and at most 5% nominal-error deterioration) in any of the 24 study/forcing/input/arm combinations. The studies used different fresh cohorts, so their rows are not a paired comparison of methods.
+
+The [evidence record](docs/evidence.md) explains the controls, verification and limits. This historical case introduction does not constitute third-party certification or validation across unrelated systems. Original evidence is retained externally and is not distributed with the repository; [optional reproduction](reproduction/README.md) requires access to that bundle. Both bundled CPU examples run from a clone without historical data.
 
 ## Methodological scope
 
@@ -116,6 +130,7 @@ python -m pip install ".[dev]"
 python scripts/check.py
 python scripts/check.py --legacy --evidence-root PATH_TO_EVIDENCE
 python -m build
+python scripts/check_distribution.py
 ```
 
 CI is configured for Linux and Windows with Python 3.11 and 3.14; remote execution has not yet been verified. See [contribution guidelines](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md).
@@ -129,6 +144,6 @@ CI is configured for Linux and Windows with Python 3.11 and 3.14; remote executi
 | [Python API](docs/api.md) | [Related work](docs/related_work.md) |
 | [Research-case reproduction](reproduction/README.md) | [Development provenance](docs/provenance.md) |
 
-Citation metadata is provided in [CITATION.cff](CITATION.cff); version history is in [CHANGELOG.md](CHANGELOG.md). Version 0.1.0 is a local alpha release, with no public package index release or DOI assigned.
+Citation metadata is provided in [CITATION.cff](CITATION.cff); version history is in [CHANGELOG.md](CHANGELOG.md). Version 0.1.0 is an alpha release, with no public package index release or DOI assigned.
 
 New package code, tests and documentation use the [MIT License](LICENSE). Historical research evidence retains its separate [licensing scope](docs/licensing.md).
