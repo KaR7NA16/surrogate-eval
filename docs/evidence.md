@@ -30,4 +30,4 @@ Metadata checks cannot establish physical pairing on their own: the caller suppl
 
 After `python -m build`, `python scripts/check_distribution.py` creates a clean environment, installs the wheel, and runs both demos, the external-model tutorial and geometry/noise commands outside the source working directory.
 
-[GitHub Actions](https://github.com/KaR7NA16/response-fidelity-lab/actions/workflows/tests.yml) runs core checks, packaging and clean-wheel verification on Linux and Windows with Python 3.11 and 3.14. Historical integration is a separate local check requiring the external bundle. These checks establish the tested implementation behavior within the stated scope.
+[GitHub Actions](https://github.com/KaR7NA16/surrogate-eval/actions/workflows/tests.yml) runs core checks, packaging and clean-wheel verification on Linux and Windows with Python 3.11 and 3.14. Historical integration is a separate local check requiring the external bundle. These checks establish the tested implementation behavior within the stated scope.

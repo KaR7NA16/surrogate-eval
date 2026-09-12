@@ -17,7 +17,7 @@ def _percent(value):
 
 def markdown(result):
     """Render reports without conflating implementation checks and science claims."""
-    lines = ["# Response Fidelity Lab report", "", f"Report type: {_text(result['kind'])}.", ""]
+    lines = ["# SurrogateEval report", "", f"Report type: {_text(result['kind'])}.", ""]
     if result["kind"] == "evaluation":
         lines += [
             f"Evaluation rows: {result['n_samples']}; clusters: {result['n_clusters']}; targets: {result['n_targets']}.",

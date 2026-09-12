@@ -5,13 +5,13 @@ The generic package and examples run without historical evidence. An external, c
 If you have authorized access to the complete bundle, extract it outside the repository. Substitute its directory for `PATH_TO_EVIDENCE` below; use a new output directory for each export.
 
 ```sh
-rfl verify-evidence --root PATH_TO_EVIDENCE
-rfl l96-export --root PATH_TO_EVIDENCE --study finetune --forcing 24 --block history --output outputs/l96-f24
-rfl compare --reference outputs/l96-f24/reference.npz --model original=outputs/l96-f24/original.npz --model response=outputs/l96-f24/response_trained.npz --baseline original --output outputs/l96-f24/comparison.json --markdown outputs/l96-f24/comparison.md
+surrogate-eval verify-evidence --root PATH_TO_EVIDENCE
+surrogate-eval l96-export --root PATH_TO_EVIDENCE --study finetune --forcing 24 --block history --output outputs/l96-f24
+surrogate-eval compare --reference outputs/l96-f24/reference.npz --model original=outputs/l96-f24/original.npz --model response=outputs/l96-f24/response_trained.npz --baseline original --output outputs/l96-f24/comparison.json --markdown outputs/l96-f24/comparison.md
 python scripts/check.py --legacy --evidence-root PATH_TO_EVIDENCE
 ```
 
-Alternatively, set `RFL_L96_ROOT` to the external evidence directory before `python scripts/check.py --legacy`. With no evidence configured, normal core tests run without this optional case. The legacy flag requires an existing evidence directory and does not silently substitute an unavailable case.
+Alternatively, set `SURROGATE_EVAL_L96_ROOT` to the external evidence directory before `python scripts/check.py --legacy`. With no evidence configured, normal core tests run without this optional case. The legacy flag requires an existing evidence directory and does not silently substitute an unavailable case.
 
 Export preserves eight training-dataset clusters. By default all three network initializations appear as repeated rows inside each dataset cluster, not additional independent clusters. `export_metadata.json` distinguishes physical starts from evaluation rows.
 

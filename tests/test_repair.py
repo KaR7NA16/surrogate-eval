@@ -2,8 +2,8 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from response_fidelity import PairedReference, evaluate
-from response_fidelity.repair import PairedFeatures, fit_heads, load_head, save_head
+from surrogate_eval import PairedReference, evaluate
+from surrogate_eval.repair import PairedFeatures, fit_heads, load_head, save_head
 
 
 def data(n, seed, prefix):

@@ -1,4 +1,4 @@
-# Response Fidelity Lab
+# SurrogateEval
 
 **Evaluate predictions. Examine responses. Make model comparisons reproducible.**
 
@@ -12,7 +12,7 @@ A research toolkit for evaluating the **perturbation-response fidelity of scient
 
 A surrogate may predict a trajectory accurately while responding incorrectly to a change in its input. For scientific workflows that use perturbations to investigate sensitivity or compare interventions, prediction error alone leaves an essential part of model behavior unmeasured.
 
-Response Fidelity Lab evaluates the nominal prediction and the response to matched positive/negative perturbations together. It helps researchers investigate:
+SurrogateEval evaluates the nominal prediction and the response to matched positive/negative perturbations together. It helps researchers investigate:
 
 - **Response accuracy:** Does the model reproduce the reference response, across targets and forecast horizons?
 - **Model comparison:** Does an apparent improvement persist across the supplied replication groups?
@@ -25,12 +25,12 @@ The workflow accepts predictions from an existing model. Basic evaluation requir
 
 | Capability | Research use | Interface |
 |---|---|---|
-| **Paired-response evaluation** | Measure nominal and finite-response error by target, horizon and replication group | `rfl score` |
-| **Paired model comparison** | Compare candidates against a baseline with cluster-level results and descriptive bootstrap intervals | `rfl compare` |
-| **Local tangent diagnostics** | Decompose realizable surrogate tangent error into visible and invisible components | `rfl diagnose` |
-| **Noise sensitivity analysis** | Evaluate a pointwise linear oracle under a declared input-noise model | `rfl noise` |
-| **Response-aware baseline fitting** | Fit and select fixed-feature ridge heads using separate training and validation records | `rfl fit-head`, `rfl predict-head` |
-| **Optional case verification** | Verify and convert the frozen Lorenz–96 evidence into the common evaluation format | `rfl verify-evidence`, `rfl l96-export` |
+| **Paired-response evaluation** | Measure nominal and finite-response error by target, horizon and replication group | `surrogate-eval score` |
+| **Paired model comparison** | Compare candidates against a baseline with cluster-level results and descriptive bootstrap intervals | `surrogate-eval compare` |
+| **Local tangent diagnostics** | Decompose realizable surrogate tangent error into visible and invisible components | `surrogate-eval diagnose` |
+| **Noise sensitivity analysis** | Evaluate a pointwise linear oracle under a declared input-noise model | `surrogate-eval noise` |
+| **Response-aware baseline fitting** | Fit and select fixed-feature ridge heads using separate training and validation records | `surrogate-eval fit-head`, `surrogate-eval predict-head` |
+| **Optional case verification** | Verify and convert the frozen Lorenz–96 evidence into the common evaluation format | `surrogate-eval verify-evidence`, `surrogate-eval l96-export` |
 
 ### Designed for inspectable scientific comparisons
 
@@ -48,8 +48,8 @@ From the repository root, install the package and run either self-contained CPU 
 
 ```sh
 python -m pip install .
-rfl demo --system linear --output outputs/linear
-rfl demo --system pendulum --output outputs/pendulum
+surrogate-eval demo --system linear --output outputs/linear
+surrogate-eval demo --system pendulum --output outputs/pendulum
 ```
 
 Open `outputs/linear/comparison.md` or `outputs/pendulum/comparison.md`. Each example generates separate training, validation and test records, fits baseline heads, freezes validation selection and evaluates on held-out initial states.
@@ -57,11 +57,11 @@ Open `outputs/linear/comparison.md` or `outputs/pendulum/comparison.md`. Each ex
 The linear example also provides Jacobians for the optional diagnostics:
 
 ```sh
-rfl diagnose --input outputs/linear/geometry.npz --output outputs/linear/geometry.json --markdown outputs/linear/geometry.md
-rfl noise --input outputs/linear/geometry.npz --sigma 0 0.001 0.01 --output outputs/linear/noise.json
+surrogate-eval diagnose --input outputs/linear/geometry.npz --output outputs/linear/geometry.json --markdown outputs/linear/geometry.md
+surrogate-eval noise --input outputs/linear/geometry.npz --sigma 0 0.001 0.01 --output outputs/linear/noise.json
 ```
 
-Use a new output directory when rerunning. `python -m response_fidelity` is equivalent to `rfl`.
+Use a new output directory when rerunning. `python -m surrogate_eval` is equivalent to `surrogate-eval`.
 
 ## Bring your own model
 
@@ -74,14 +74,14 @@ Export physically matched reference and predicted outputs in the common shape:
 Then score one model or compare multiple candidates:
 
 ```sh
-rfl score --reference reference.npz --prediction model.npz --output score.json --markdown score.md
-rfl compare --reference reference.npz --model baseline=baseline.npz --model candidate=model.npz --baseline baseline --output comparison.json --markdown comparison.md
+surrogate-eval score --reference reference.npz --prediction model.npz --output score.json --markdown score.md
+surrogate-eval compare --reference reference.npz --model baseline=baseline.npz --model candidate=model.npz --baseline baseline --output comparison.json --markdown comparison.md
 ```
 
 The Python interface uses the same validated records:
 
 ```python
-from response_fidelity import load_reference, load_prediction, evaluate
+from surrogate_eval import load_reference, load_prediction, evaluate
 
 reference = load_reference("reference.npz")
 prediction = load_prediction("model.npz")
@@ -106,7 +106,7 @@ The [verification record](docs/evidence.md) separates historical-case checks fro
 
 ## Methodological scope
 
-Response Fidelity Lab reports finite perturbation errors, not unmeasured full-Jacobian accuracy. Local geometry assumes supplied, compatible reference derivatives; a pointwise linear oracle does not establish global learnability. Bootstrap intervals are descriptive for fixed models and supplied clusters. Physical pairing, training-only scales and cluster independence remain the researcher's responsibility.
+SurrogateEval reports finite perturbation errors, not unmeasured full-Jacobian accuracy. Local geometry assumes supplied, compatible reference derivatives; a pointwise linear oracle does not establish global learnability. Bootstrap intervals are descriptive for fixed models and supplied clusters. Physical pairing, training-only scales and cluster independence remain the researcher's responsibility.
 
 Response-aware ridge fitting uses established methods. The project's contribution is a reusable evaluation workflow with explicit data, aggregation and provenance conventions. Read the [method definitions](docs/methods.md), [fitting procedure](docs/repair.md) and [related work](docs/related_work.md) for details.
 
@@ -122,7 +122,7 @@ python -m build
 python scripts/check_distribution.py
 ```
 
-[GitHub Actions](https://github.com/KaR7NA16/response-fidelity-lab/actions/workflows/tests.yml) runs tests, builds distributions and verifies a clean wheel installation on Linux and Windows with Python 3.11 and 3.14. Each run records the outcome for its commit. See [contribution guidelines](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md).
+[GitHub Actions](https://github.com/KaR7NA16/surrogate-eval/actions/workflows/tests.yml) runs tests, builds distributions and verifies a clean wheel installation on Linux and Windows with Python 3.11 and 3.14. Each run records the outcome for its commit. See [contribution guidelines](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md).
 
 ## Documentation and citation
 

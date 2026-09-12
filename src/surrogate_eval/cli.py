@@ -52,7 +52,7 @@ def _emit(result, output=None, markdown=None):
 
 def parser():
     ap = argparse.ArgumentParser(
-        prog="rfl",
+        prog="surrogate-eval",
         description="Evaluate paired perturbation response of scientific surrogate models",
     )
     ap.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -229,7 +229,7 @@ def main(argv=None):
                 )
             )
     except (ValueError, OSError, KeyError, ArithmeticError) as exc:
-        print(f"rfl: {exc}", file=sys.stderr)
+        print(f"surrogate-eval: {exc}", file=sys.stderr)
         return 2
     return 0
 

@@ -7,8 +7,8 @@ The runnable example below illustrates the interchange with two targets and two 
 ```python
 from pathlib import Path
 import numpy as np
-from response_fidelity import PairedReference, Prediction, evaluate
-from response_fidelity.schema import save_reference, save_prediction, write_json
+from surrogate_eval import PairedReference, Prediction, evaluate
+from surrogate_eval.schema import save_reference, save_prediction, write_json
 
 out = Path("outputs/external-model")  # must be a new output location
 n, d, h = 12, 2, 2
@@ -33,7 +33,7 @@ write_json(out / "score.json", evaluate(ref, pred))
 For a real integration, replace `truth` with trusted simulator/experimental outputs and `0.9 * truth` with model outputs. Train-derived target scales must be supplied explicitly. Save each candidate prediction file against exactly the same rows; then use:
 
 ```sh
-rfl score --reference outputs/external-model/reference.npz --prediction outputs/external-model/model.npz --output outputs/external-model/cli-score.json --markdown outputs/external-model/score.md
+surrogate-eval score --reference outputs/external-model/reference.npz --prediction outputs/external-model/model.npz --output outputs/external-model/cli-score.json --markdown outputs/external-model/score.md
 ```
 
-Use `rfl compare --help` for multiple candidates. Reports include each target/horizon, equal-weight cluster aggregates and paired cluster comparisons. Never interpret an absent label as a zero response. A time series without matched perturbation reference outputs cannot identify response error through this API.
+Use `surrogate-eval compare --help` for multiple candidates. Reports include each target/horizon, equal-weight cluster aggregates and paired cluster comparisons. Never interpret an absent label as a zero response. A time series without matched perturbation reference outputs cannot identify response error through this API.

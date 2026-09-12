@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from response_fidelity import PairedReference, Prediction
+from surrogate_eval import PairedReference, Prediction
 
 
 @pytest.fixture

@@ -7,13 +7,13 @@ import sys
 import numpy as np
 import pytest
 
-from response_fidelity.examples import make_demo, pendulum_flow
-from response_fidelity.schema import load_reference
+from surrogate_eval.examples import make_demo, pendulum_flow
+from surrogate_eval.schema import load_reference
 
 
 def run(*args, cwd=None, check=True):
     return subprocess.run(
-        [sys.executable, "-m", "response_fidelity", *map(str, args)],
+        [sys.executable, "-m", "surrogate_eval", *map(str, args)],
         cwd=cwd,
         text=True,
         capture_output=True,
@@ -22,7 +22,7 @@ def run(*args, cwd=None, check=True):
 
 
 def test_core_import_has_no_training_dependency():
-    code = "import response_fidelity,sys; assert not any(x in sys.modules for x in ['torch','scipy','matplotlib'])"
+    code = "import surrogate_eval,sys; assert not any(x in sys.modules for x in ['torch','scipy','matplotlib'])"
     subprocess.run([sys.executable, "-c", code], check=True)
 
 
@@ -124,10 +124,10 @@ def test_pendulum_has_reference_refinement_check():
 
 
 @pytest.mark.skipif(
-    not os.environ.get("RFL_L96_ROOT"), reason="optional frozen L96 data not configured"
+    not os.environ.get("SURROGATE_EVAL_L96_ROOT"), reason="optional frozen L96 data not configured"
 )
 def test_optional_l96_migration_reproduces_original_summary(tmp_path):
-    root = Path(os.environ["RFL_L96_ROOT"])
+    root = Path(os.environ["SURROGATE_EVAL_L96_ROOT"])
     run("l96-export", "--root", root, "--output", tmp_path / "l96")
     folder = tmp_path / "l96"
     out = run(

@@ -60,16 +60,16 @@ def main():
     commands = [
         [
             "-c",
-            "import response_fidelity, importlib.util; "
-            "assert 'site-packages' in response_fidelity.__file__; "
+            "import surrogate_eval, importlib.util; "
+            "assert 'site-packages' in surrogate_eval.__file__; "
             "assert importlib.util.find_spec('torch') is None; "
-            "print(response_fidelity.__file__)",
+            "print(surrogate_eval.__file__)",
         ],
-        ["-m", "response_fidelity", "demo", "--system", "linear", "--output", "linear"],
-        ["-m", "response_fidelity", "demo", "--system", "pendulum", "--output", "pendulum"],
+        ["-m", "surrogate_eval", "demo", "--system", "linear", "--output", "linear"],
+        ["-m", "surrogate_eval", "demo", "--system", "pendulum", "--output", "pendulum"],
         [
             "-m",
-            "response_fidelity",
+            "surrogate_eval",
             "diagnose",
             "--input",
             "linear/geometry.npz",
@@ -80,7 +80,7 @@ def main():
         ],
         [
             "-m",
-            "response_fidelity",
+            "surrogate_eval",
             "noise",
             "--input",
             "linear/geometry.npz",
@@ -103,7 +103,7 @@ def main():
     commands.append(
         [
             "-m",
-            "response_fidelity",
+            "surrogate_eval",
             "score",
             "--reference",
             "outputs/external-model/reference.npz",

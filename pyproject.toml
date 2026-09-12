@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "response-fidelity-lab"
+name = "surrogate-eval"
 version = "0.1.0"
 description = "Paired perturbation-response evaluation for scientific surrogate models"
 readme = "README.md"
@@ -21,16 +21,16 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/KaR7NA16/response-fidelity-lab"
-Repository = "https://github.com/KaR7NA16/response-fidelity-lab"
-Issues = "https://github.com/KaR7NA16/response-fidelity-lab/issues"
+Homepage = "https://github.com/KaR7NA16/surrogate-eval"
+Repository = "https://github.com/KaR7NA16/surrogate-eval"
+Issues = "https://github.com/KaR7NA16/surrogate-eval/issues"
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "build>=1.2", "ruff>=0.11"]
 reproduce = ["scipy>=1.14", "threadpoolctl>=3.5", "torch>=2.5"]
 
 [project.scripts]
-rfl = "response_fidelity.cli:main"
+surrogate-eval = "surrogate_eval.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

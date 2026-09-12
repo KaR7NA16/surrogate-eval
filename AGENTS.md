@@ -1,11 +1,11 @@
-# Response Fidelity Lab development
+# SurrogateEval development
 
 Keep reusable software and publishable documentation in this repository.
 
 - Historical evidence is external. Do not copy internal reports, local source
   paths, private records or credentials into the repository. Preserve external
   historical protocols, results, models and manifests without rewriting them.
-- Develop reusable functionality in `src/response_fidelity/`; use tests and
+- Develop reusable functionality in `src/surrogate_eval/`; use tests and
   examples that do not depend on the historical experiment.
 - Basic installation and evaluation require NumPy only. Import heavyweight
   training libraries only in optional reproduction paths.

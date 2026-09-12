@@ -18,13 +18,15 @@ def main():
     ap.add_argument(
         "--legacy",
         action="store_true",
-        help="also test external L96 evidence (requires --evidence-root or RFL_L96_ROOT)",
+        help="also test external L96 evidence (requires --evidence-root or SURROGATE_EVAL_L96_ROOT)",
     )
     ap.add_argument("--evidence-root", type=Path, help="External complete L96 evidence directory")
     args = ap.parse_args()
-    evidence = args.evidence_root or os.environ.get("RFL_L96_ROOT")
+    evidence = args.evidence_root or os.environ.get("SURROGATE_EVAL_L96_ROOT")
     if args.legacy and (not evidence or not Path(evidence).is_dir()):
-        ap.error("--legacy requires an existing --evidence-root or RFL_L96_ROOT directory")
+        ap.error(
+            "--legacy requires an existing --evidence-root or SURROGATE_EVAL_L96_ROOT directory"
+        )
     if args.evidence_root and not args.legacy:
         ap.error("--evidence-root requires --legacy")
     root = Path(__file__).resolve().parents[1]
@@ -36,9 +38,9 @@ def main():
     run.mkdir(parents=True)
     env = os.environ.copy()
     if args.legacy:
-        env["RFL_L96_ROOT"] = str(Path(evidence).resolve())
+        env["SURROGATE_EVAL_L96_ROOT"] = str(Path(evidence).resolve())
     else:
-        env.pop("RFL_L96_ROOT", None)
+        env.pop("SURROGATE_EVAL_L96_ROOT", None)
     commands = [
         [sys.executable, "-m", "ruff", "check", "src", "tests", "scripts"],
         [sys.executable, "-m", "ruff", "format", "--check", "src", "tests", "scripts"],
@@ -79,8 +81,7 @@ def main():
         "platform": platform.platform(),
         "legacy_enabled": args.legacy,
         "versions": {
-            n: importlib.metadata.version(n)
-            for n in ["numpy", "pytest", "ruff", "response-fidelity-lab"]
+            n: importlib.metadata.version(n) for n in ["numpy", "pytest", "ruff", "surrogate-eval"]
         },
         "commands": outcomes,
         "source_sha256": {

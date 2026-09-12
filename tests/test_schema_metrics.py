@@ -4,8 +4,8 @@ import json
 import numpy as np
 import pytest
 
-from response_fidelity import Prediction, compare, evaluate
-from response_fidelity.schema import (
+from surrogate_eval import Prediction, compare, evaluate
+from surrogate_eval.schema import (
     load_prediction,
     load_reference,
     save_prediction,

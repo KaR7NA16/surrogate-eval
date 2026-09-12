@@ -19,5 +19,5 @@ jobs:
       - run: python scripts/check.py
       - run: python -m build
       - run: python scripts/check_distribution.py
-      - run: python -m response_fidelity demo --system linear --output outputs/ci-linear
-      - run: python -m response_fidelity demo --system pendulum --output outputs/ci-pendulum
+      - run: python -m surrogate_eval demo --system linear --output outputs/ci-linear
+      - run: python -m surrogate_eval demo --system pendulum --output outputs/ci-pendulum

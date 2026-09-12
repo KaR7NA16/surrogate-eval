@@ -1,9 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this software, cite the author, title, version and repository URL."
-title: "Response Fidelity Lab"
+title: "SurrogateEval"
 type: software
-repository-code: "https://github.com/KaR7NA16/response-fidelity-lab"
-url: "https://github.com/KaR7NA16/response-fidelity-lab"
+repository-code: "https://github.com/KaR7NA16/surrogate-eval"
+url: "https://github.com/KaR7NA16/surrogate-eval"
 authors:
   - name: "KaR7NA16"
 version: 0.1.0

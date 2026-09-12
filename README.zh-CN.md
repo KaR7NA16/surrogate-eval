@@ -1,4 +1,4 @@
-# Response Fidelity Lab
+# SurrogateEval
 
 **评估预测精度，检验扰动响应，让科学模型比较有据可查。**
 
@@ -12,7 +12,7 @@
 
 科学代理模型可能准确预测一条轨迹，却错误地响应输入变化。当研究依赖扰动来分析敏感性或比较干预时，普通预测误差无法完整描述模型的行为。
 
-Response Fidelity Lab 将正常状态下的预测与正、负扰动下的响应放在同一套评估流程中，帮助研究者回答四类问题：
+SurrogateEval 将正常状态下的预测与正、负扰动下的响应放在同一套评估流程中，帮助研究者回答四类问题：
 
 - **响应是否准确？** 模型能否在不同目标与预测时间上重现参考系统的扰动响应？
 - **改善是否稳定？** 相对基线的收益，能否在指定的独立重复组中保持？
@@ -25,12 +25,12 @@ Response Fidelity Lab 将正常状态下的预测与正、负扰动下的响应�
 
 | 能力 | 科研用途 | 接口 |
 |---|---|---|
-| **成对响应评估** | 按目标、预测时间和重复组评估普通预测误差与有限扰动响应误差 | `rfl score` |
-| **模型成对比较** | 给出候选相对基线的改善幅度、分组表现与描述性 bootstrap 区间 | `rfl compare` |
-| **局部切线诊断** | 将满足输入可实现条件的模型切线误差分为可见与不可见部分 | `rfl diagnose` |
-| **噪声敏感性分析** | 在明确的输入噪声假设下计算逐点线性 oracle 风险 | `rfl noise` |
-| **响应感知基线拟合** | 使用分开的训练与验证记录，拟合和选择固定特征岭回归输出层 | `rfl fit-head`、`rfl predict-head` |
-| **可选案例核验** | 校验冻结的 Lorenz–96 证据，并转换为通用评估格式 | `rfl verify-evidence`、`rfl l96-export` |
+| **成对响应评估** | 按目标、预测时间和重复组评估普通预测误差与有限扰动响应误差 | `surrogate-eval score` |
+| **模型成对比较** | 给出候选相对基线的改善幅度、分组表现与描述性 bootstrap 区间 | `surrogate-eval compare` |
+| **局部切线诊断** | 将满足输入可实现条件的模型切线误差分为可见与不可见部分 | `surrogate-eval diagnose` |
+| **噪声敏感性分析** | 在明确的输入噪声假设下计算逐点线性 oracle 风险 | `surrogate-eval noise` |
+| **响应感知基线拟合** | 使用分开的训练与验证记录，拟合和选择固定特征岭回归输出层 | `surrogate-eval fit-head`、`surrogate-eval predict-head` |
+| **可选案例核验** | 校验冻结的 Lorenz–96 证据，并转换为通用评估格式 | `surrogate-eval verify-evidence`、`surrogate-eval l96-export` |
 
 ### 为可核查的科学比较而设计
 
@@ -48,8 +48,8 @@ Response Fidelity Lab 将正常状态下的预测与正、负扰动下的响应�
 
 ```sh
 python -m pip install .
-rfl demo --system linear --output outputs/linear
-rfl demo --system pendulum --output outputs/pendulum
+surrogate-eval demo --system linear --output outputs/linear
+surrogate-eval demo --system pendulum --output outputs/pendulum
 ```
 
 打开 `outputs/linear/comparison.md` 或 `outputs/pendulum/comparison.md`。每个示例都会生成分开的训练、验证与测试记录，拟合基线，在验证集上固定选择，再对留出的初始状态进行评估。
@@ -57,11 +57,11 @@ rfl demo --system pendulum --output outputs/pendulum
 线性示例还提供可供诊断的 Jacobian：
 
 ```sh
-rfl diagnose --input outputs/linear/geometry.npz --output outputs/linear/geometry.json --markdown outputs/linear/geometry.md
-rfl noise --input outputs/linear/geometry.npz --sigma 0 0.001 0.01 --output outputs/linear/noise.json
+surrogate-eval diagnose --input outputs/linear/geometry.npz --output outputs/linear/geometry.json --markdown outputs/linear/geometry.md
+surrogate-eval noise --input outputs/linear/geometry.npz --sigma 0 0.001 0.01 --output outputs/linear/noise.json
 ```
 
-重复运行时请使用新的输出目录。也可以用 `python -m response_fidelity` 替代 `rfl`。
+重复运行时请使用新的输出目录。也可以用 `python -m surrogate_eval` 替代 `surrogate-eval`。
 
 ## 接入自己的模型
 
@@ -74,14 +74,14 @@ rfl noise --input outputs/linear/geometry.npz --sigma 0 0.001 0.01 --output outp
 随后进行单模型评分或多模型比较：
 
 ```sh
-rfl score --reference reference.npz --prediction model.npz --output score.json --markdown score.md
-rfl compare --reference reference.npz --model baseline=baseline.npz --model candidate=model.npz --baseline baseline --output comparison.json --markdown comparison.md
+surrogate-eval score --reference reference.npz --prediction model.npz --output score.json --markdown score.md
+surrogate-eval compare --reference reference.npz --model baseline=baseline.npz --model candidate=model.npz --baseline baseline --output comparison.json --markdown comparison.md
 ```
 
 Python API 使用相同的数据校验与评分实现：
 
 ```python
-from response_fidelity import load_reference, load_prediction, evaluate
+from surrogate_eval import load_reference, load_prediction, evaluate
 
 reference = load_reference("reference.npz")
 prediction = load_prediction("model.npz")
@@ -122,7 +122,7 @@ python -m build
 python scripts/check_distribution.py
 ```
 
-[GitHub Actions](https://github.com/KaR7NA16/response-fidelity-lab/actions/workflows/tests.yml) 在 Linux/Windows × Python 3.11/3.14 上执行测试、构建分发包并验证干净环境中的 wheel 安装。每次运行均记录对应提交的结果。开发规范见[贡献指南](CONTRIBUTING.md)，后续目标见[路线图](docs/roadmap.md)。
+[GitHub Actions](https://github.com/KaR7NA16/surrogate-eval/actions/workflows/tests.yml) 在 Linux/Windows × Python 3.11/3.14 上执行测试、构建分发包并验证干净环境中的 wheel 安装。每次运行均记录对应提交的结果。开发规范见[贡献指南](CONTRIBUTING.md)，后续目标见[路线图](docs/roadmap.md)。
 
 ## 文档与引用
 

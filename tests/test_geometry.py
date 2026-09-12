@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from response_fidelity.geometry import decompose, oracle_risk
+from surrogate_eval.geometry import decompose, oracle_risk
 
 
 def test_known_orthogonal_decomposition():

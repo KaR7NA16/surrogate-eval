@@ -7,8 +7,8 @@ Feature center and spread use nominal training inputs only; spread is floored at
 The zero-response-weight candidate with smallest nominal validation MSE is the nominal baseline. Among all candidates satisfying nominal validation MSE ≤ `nominal_cap` times that baseline, select the smallest response validation MSE. Default cap: 1.05. Grid ties keep first occurrence. Save both selected models and the full candidate report before obtaining final test scores. The validation cap does not guarantee a test cap.
 
 ```sh
-rfl fit-head --train-reference train-reference.npz --train-features train-features.npz --validation-reference validation-reference.npz --validation-features validation-features.npz --output response-head.npz --nominal-output nominal-head.npz --report selection.json
-rfl predict-head --model response-head.npz --features test-features.npz --output test-prediction.npz
+surrogate-eval fit-head --train-reference train-reference.npz --train-features train-features.npz --validation-reference validation-reference.npz --validation-features validation-features.npz --output response-head.npz --nominal-output nominal-head.npz --report selection.json
+surrogate-eval predict-head --model response-head.npz --features test-features.npz --output test-prediction.npz
 ```
 
-`rfl demo` runs this complete pattern on generated linear or pendulum data. Caller responsibility includes leakage-free feature construction and preserving an untouched evaluation set. The fitter cannot identify hidden test leakage inside supplied features. It implements no automatic neural-network training or Jacobian estimation, and is not a new optimization algorithm.
+`surrogate-eval demo` runs this complete pattern on generated linear or pendulum data. Caller responsibility includes leakage-free feature construction and preserving an untouched evaluation set. The fitter cannot identify hidden test leakage inside supplied features. It implements no automatic neural-network training or Jacobian estimation, and is not a new optimization algorithm.
