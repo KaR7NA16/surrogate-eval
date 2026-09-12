@@ -133,7 +133,7 @@ python -m build
 python scripts/check_distribution.py
 ```
 
-CI is configured for Linux and Windows with Python 3.11 and 3.14; remote execution has not yet been verified. See [contribution guidelines](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md).
+[GitHub Actions](https://github.com/KaR7NA16/response-fidelity-lab/actions/workflows/tests.yml) runs tests, builds distributions and verifies a clean wheel installation on Linux and Windows with Python 3.11 and 3.14. Each run records the outcome for its commit. See [contribution guidelines](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md).
 
 ## Documentation and citation
 

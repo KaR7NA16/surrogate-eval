@@ -133,7 +133,7 @@ python -m build
 python scripts/check_distribution.py
 ```
 
-CI 已配置 Linux/Windows × Python 3.11/3.14，尚未验证远端执行结果。开发规范见[贡献指南](CONTRIBUTING.md)，后续目标见[路线图](docs/roadmap.md)。
+[GitHub Actions](https://github.com/KaR7NA16/response-fidelity-lab/actions/workflows/tests.yml) 在 Linux/Windows × Python 3.11/3.14 上执行测试、构建分发包并验证干净环境中的 wheel 安装。每次运行均记录对应提交的结果。开发规范见[贡献指南](CONTRIBUTING.md)，后续目标见[路线图](docs/roadmap.md)。
 
 ## 文档与引用
 
