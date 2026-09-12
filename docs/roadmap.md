@@ -9,7 +9,6 @@ Potential future work is listed with evidence needed before making stronger clai
 | External-user integration | A second researcher supplies real model outputs without editing package internals |
 | Broader benchmark validity | Frozen protocol on a genuinely different system with independently defined replication units |
 | Additional model adapters | Round-trip identity and physical-unit tests against upstream predictions |
-| Derivative-learning effectiveness | Equal-budget controls and a fresh protocol showing a prespecified practical gain |
 | Public software release | Responsible authorship, historical-data rights, remote CI results and a tagged release |
 
 These are unimplemented future milestones. The current software should be assessed on its implemented interfaces and local verification, not on this roadmap.

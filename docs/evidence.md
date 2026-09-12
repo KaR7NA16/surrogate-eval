@@ -1,22 +1,33 @@
-# Evidence record
+# Software verification record
 
-## Original L96 case
+## Historical-case integration
 
-Two intervention studies each froze selection before generating 1,536 fresh initial states, across F16/F24 and eight training-dataset clusters per forcing. Each study retained three network initializations per input block inside the same dataset cluster. The second study trained 384 full-network trajectories; this is computational search effort, not 384 independent datasets. It used finite paired increments, not exact full-Jacobian labels.
+The optional Lorenz–96 adapter connects frozen research records to the generic evaluation interface. The regression test in `tests/test_cli_examples.py` exercises the default F24 history-input export and comparison:
 
-History-input response-trained models versus their original same-input MLP baseline yielded:
+1. Verify the SHA-256 hashes of all 119 files bound by the external evidence manifest before reading the case.
+2. Reconstruct saved-model predictions using the NumPy adapter and export reference/prediction records.
+3. Run the generic comparison command on those records.
+4. Match the median cluster response reduction to the archived summary with an absolute tolerance of 1e-12.
+5. Check that the original-model report retains eight dataset clusters.
 
-| Study | F16 median cluster response-error reduction | F24 | F24 longest-horizon reduction |
-|---|---:|---:|---:|
-| Frozen-feature head intervention | 2.13% | 0.33% | 0.07% |
-| Full-network continuation/intervention | 3.03% | 0.88% | 0.54% |
+This regression checks the selected export path and statistic. It does not rerun the original training or test every historical study/configuration. The complete evidence bundle remains external; see [case verification and export](../reproduction/README.md) for access requirements and commands.
 
-The studies used different fresh cohorts; rows are not a direct paired comparison between intervention methods. All 24 study/forcing/input/arm combinations had 0/8 clusters meeting the declared practical criterion of at least 10% response improvement with at most 5% nominal-error deterioration. The response pool searched more trajectories than the nominal continuation control. These facts do not demonstrate a strong new method or resolve the F24 difficulty.
+## Generic numerical and data-contract tests
 
-New starts came from the known numerical ensemble; they are not newly trained datasets, unseen systems or an untouched external benchmark. Exploratory scalar sign decisions likewise showed modest benefit and do not establish control utility. Original timing numbers describe one local hardware run, not portable speed benchmarks. Full training was executed once; selected predictions, metrics, derivatives and the head solve received separate checks. A complete second full-training reproduction was not performed.
+| Area | Executable checks |
+|---|---|
+| Pairing metadata | Reject mismatched sample IDs, horizons, target IDs and units; reject invalid shapes and nonfinite values |
+| Aggregation | Check equal cluster weighting with unequal row counts, zero baselines and reproducible bootstrap output |
+| Local geometry | Check known decompositions, rank-deficient inputs and agreement with a directly solved regularized oracle |
+| Baseline fitting | Check training-only normalization, split consistency and agreement with independent normal equations |
+| End-to-end use | Run linear and pendulum examples, external scoring, comparison reports and CLI diagnostics |
 
-## Software evidence
+Metadata checks cannot establish physical pairing on their own: the caller supplies physically matched reference and prediction branches. See the [data format](data_format.md) for that contract.
 
-Generic tests check identity/shape failures, nonfinite inputs, unequal clusters, zero baselines, analytic rank-deficient geometry, independent oracle solves, leakage-sensitive fitting, CLI behavior and generated linear/pendulum workflows. Optional L96 integration tests verify the 119-file evidence manifest and migration equivalence. These tests validate implementation behavior; they do not add scientific replications or prove global observability.
+## Reproducing the checks
 
-Local test records are generated under `outputs/check-*/validation.json`, with source hashes, interpreter/library versions and command outcomes. See [reproduction](../reproduction/README.md) for the optional case. Remote CI is configured separately; no remote success is implied by local checks.
+`python scripts/check.py` runs the core suite. At version 0.1.0, it has 37 passing tests and one optional historical test skipped when no evidence bundle is configured. With `--legacy --evidence-root PATH_TO_EVIDENCE`, all 38 tests run. Validation records under `outputs/check-*/validation.json` contain source hashes, interpreter/library versions and command outcomes.
+
+After `python -m build`, `python scripts/check_distribution.py` creates a clean environment, installs the wheel, and runs both demos, the external-model tutorial and geometry/noise commands outside the source working directory.
+
+[GitHub Actions](https://github.com/KaR7NA16/response-fidelity-lab/actions/workflows/tests.yml) runs core checks, packaging and clean-wheel verification on Linux and Windows with Python 3.11 and 3.14. Historical integration is a separate local check requiring the external bundle. These checks establish the tested implementation behavior within the stated scope.

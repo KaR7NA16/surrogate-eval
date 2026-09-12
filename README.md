@@ -30,7 +30,7 @@ The workflow accepts predictions from an existing model. Basic evaluation requir
 | **Local tangent diagnostics** | Decompose realizable surrogate tangent error into visible and invisible components | `rfl diagnose` |
 | **Noise sensitivity analysis** | Evaluate a pointwise linear oracle under a declared input-noise model | `rfl noise` |
 | **Response-aware baseline fitting** | Fit and select fixed-feature ridge heads using separate training and validation records | `rfl fit-head`, `rfl predict-head` |
-| **Research-case reproduction** | Verify and convert the frozen Lorenz–96 evidence into the common evaluation format | `rfl verify-evidence`, `rfl l96-export` |
+| **Optional case verification** | Verify and convert the frozen Lorenz–96 evidence into the common evaluation format | `rfl verify-evidence`, `rfl l96-export` |
 
 ### Designed for inspectable scientific comparisons
 
@@ -91,29 +91,18 @@ print(report["aggregate"]["response_mse"])
 
 Start with the [runnable external-model tutorial](docs/your_model.md), then consult the [data format](docs/data_format.md) and [API reference](docs/api.md). Reference outputs for matched perturbations are required; ordinary time-series data alone do not provide response-error labels.
 
-## Case introduction: tested in a Lorenz–96 research workflow
+## Research-case verification
 
-Response Fidelity Lab grew from a study of perturbation-response fidelity in partially observed chaotic dynamics. This historical case shows the workflow in use under a defined scientific protocol, with controls and numerical verification.
+The toolkit has been checked against a frozen, partially observed Lorenz–96 research case. Verification follows the data from the original evidence through saved-model prediction reconstruction to the generic comparison report:
 
-| Test dimension | Recorded scope |
+| Verification | What is checked |
 |---|---|
-| Dynamical regimes | Partially observed Lorenz–96 at F16 and F24 |
-| Evaluation design | Two intervention studies; selection fixed before generating 1,536 fresh initial states per study |
-| Replication | Eight training-dataset clusters per forcing; three network initializations within each cluster and input block |
-| Controls | Original same-input MLP, nominal continuation and response-aware interventions; current-only and history inputs |
-| Numerical checks | Independent NumPy prediction/metric checks, derivative checks and a separate head-solve reproduction |
-| Provenance | 119 manifest-bound files covering frozen protocols, weights, reference data and results |
+| Evidence integrity | SHA-256 verification of all 119 manifest-bound files before export |
+| Prediction reconstruction | Saved-model predictions reconstructed through the NumPy adapter |
+| Metric agreement | The F24 history-input regression test matches the archived median cluster response reduction to an absolute tolerance of 1e-12 |
+| Replication structure | The same regression test checks that the exported comparison retains eight dataset clusters |
 
-History-input models yielded these median cluster response-error reductions against their original same-input MLP:
-
-| Intervention | F16 | F24 |
-|---|---:|---:|
-| Frozen-feature head | 2.13% | 0.33% |
-| Full-network intervention | 3.03% | 0.88% |
-
-This case demonstrates use in a controlled scientific evaluation, including faithful reporting of modest effects. No cluster met the declared joint practical criterion (at least 10% response improvement and at most 5% nominal-error deterioration) in any of the 24 study/forcing/input/arm combinations. The studies used different fresh cohorts, so their rows are not a paired comparison of methods.
-
-The [evidence record](docs/evidence.md) explains the controls, verification and limits. This historical case introduction does not constitute third-party certification or validation across unrelated systems. Original evidence is retained externally and is not distributed with the repository; [optional reproduction](reproduction/README.md) requires access to that bundle. Both bundled CPU examples run from a clone without historical data.
+The [verification record](docs/evidence.md) separates historical-case checks from generic numerical and data-contract tests. The original evidence bundle is external; [case verification and export](reproduction/README.md) require access to it. Both bundled CPU examples run independently of that bundle.
 
 ## Methodological scope
 
@@ -142,7 +131,7 @@ python scripts/check_distribution.py
 | [External-model tutorial](docs/your_model.md) | [Metrics and assumptions](docs/methods.md) |
 | [Data format](docs/data_format.md) | [Design and scope](docs/design.md) |
 | [Python API](docs/api.md) | [Related work](docs/related_work.md) |
-| [Research-case reproduction](reproduction/README.md) | [Development provenance](docs/provenance.md) |
+| [Case verification and export](reproduction/README.md) | [Development provenance](docs/provenance.md) |
 
 Citation metadata is provided in [CITATION.cff](CITATION.cff); version history is in [CHANGELOG.md](CHANGELOG.md). Version 0.1.0 is an alpha release, with no public package index release or DOI assigned.
 
