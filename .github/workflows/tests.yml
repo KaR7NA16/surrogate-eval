@@ -1,0 +1,20 @@
+name: tests
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.14']
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install ".[dev]"
+      - run: python scripts/check.py
+      - run: python -m build
+      - run: python -m response_fidelity demo --system linear --output outputs/ci-linear
+      - run: python -m response_fidelity demo --system pendulum --output outputs/ci-pendulum

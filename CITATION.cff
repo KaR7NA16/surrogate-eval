@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, cite its title and version. Replace provisional collective authorship with verified responsible authors and add a release URL/DOI before public release."
+title: "Response Fidelity Lab"
+type: software
+authors:
+  - name: "Response Fidelity Lab contributors"
+version: 0.1.0
+date-released: 2026-09-12
+license: MIT
+abstract: "A NumPy research toolkit for evaluating scientific surrogate perturbation responses alongside nominal prediction error. The license applies to new package code; historical evidence is excluded."
+keywords:
+  - scientific computing
+  - surrogate models
+  - response evaluation
